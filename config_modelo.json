@@ -1,0 +1,11 @@
+{
+  "tables":[],
+  "URI": "",
+  "postgres" :{
+    "host": "",
+    "database": "",
+    "user": "",
+    "password": ""
+  }
+}
+
