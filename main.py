@@ -3,10 +3,18 @@ import mongo
 import util
 
 
-def tables_from_json():
+# loads json file with configurations
+def load_config():
     with open('config.json') as json_file:
-        data = json.load(json_file)
-    return data["tables"]
+        return json.load(json_file)
+
+
+# global variable that holds json dictionary values for configuration
+config = load_config()
+
+
+def tables_from_json():
+    return config["tables"]
 
 
 def treat_collection(inner_collection):
@@ -18,7 +26,7 @@ def treat_collection(inner_collection):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    db = mongo.get_database()
+    db = mongo.get_database(config["URI"])
     tables = tables_from_json()
 
     collection = db["Invoices"].find()
@@ -27,5 +35,5 @@ if __name__ == '__main__':
 
     print(tables)
 
-    mongo.insert_collection(db, test_list)
+    #mongo.insert_collection(db, test_list)
 

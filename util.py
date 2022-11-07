@@ -1,11 +1,8 @@
-# flatten nested objects, keeping their parent names as reference
 import binascii
-import string
-
 import bson
 
 
-# flatten the document
+# flatten nested objects, keeping their parent names as reference
 def flatten_doc(simple_doc, map_reference, parent_name):
     for field in simple_doc:
         if isinstance(simple_doc[field], dict):
@@ -74,8 +71,9 @@ def convert_its_binarys_from_list(simple_list):
     return result
 
 
+# call all necessary functions to treat the document
 def treat_document(document):
-    # this can only be called like that because we want to transform binarys only for the second level foward
+    # this can only be called like that because we want to transform binarys only for the second level forward
     for inner_field in document:
         if isinstance(document[inner_field], list):
             document[inner_field] = convert_its_binarys_from_list(document[inner_field])

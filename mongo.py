@@ -1,9 +1,8 @@
 import pymongo
 
 
-def get_database():
-    URI = "mongodb://localhost:27017/?readPreference=primary&directConnection=true&ssl=false"
-    client = pymongo.MongoClient(URI)
+def get_database(uri):
+    client = pymongo.MongoClient(uri)
     print("Connect Successful")
     print(client.list_database_names())
     mydb = client["educbank"]

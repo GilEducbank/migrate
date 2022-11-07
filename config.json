@@ -1,4 +1,11 @@
 {
-  "tables":["Invoices", "Enrollment", "AbpTenants", "AcademicClasses", "Holidays", "Schools", "Transfers"]
+  "tables":["Invoices", "Enrollment", "AbpTenants", "AcademicClasses", "Holidays", "Schools", "Transfers"],
+  "URI": "mongodb://localhost:27017/?readPreference=primary&directConnection=true&ssl=false",
+  "postgres" :{
+    "host": "localhost",
+    "database": "postgres",
+    "user": "postgres",
+    "password": "admin"
+  }
 }
 
