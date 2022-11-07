@@ -49,6 +49,15 @@ def convert_its_binarys_from_dict(simple_doc):
     return map
 
 
+# convert binarys from a  list of objects
+def convert_its_binarys_from_list(simple_list):
+    result = []
+    for inner_item in simple_list:
+        result.append(convert_its_binarys_from_dict(inner_item))
+
+    return result
+
+
 # transform binary into
 def binary_to_array(insertion):
     str = cut_string(insertion)
@@ -60,15 +69,6 @@ def cut_string(string_to_cut):
     str = string_to_cut[:len(string_to_cut) - 1]
     str = str[2:]
     return str
-
-
-# convert binarys from a  list of objects
-def convert_its_binarys_from_list(simple_list):
-    result = []
-    for inner_item in simple_list:
-        result.append(convert_its_binarys_from_dict(inner_item))
-
-    return result
 
 
 # call all necessary functions to treat the document
