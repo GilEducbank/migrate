@@ -1,0 +1,4 @@
+{
+  "tables":["Invoices", "Enrollment", "AbpTenants", "AcademicClasses", "Holidays", "Schools", "Transfers"]
+}
+
