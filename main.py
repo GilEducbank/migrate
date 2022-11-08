@@ -36,16 +36,13 @@ if __name__ == '__main__':
     # get tables to work with
     tables = tables_from_json()
 
-    collection = mongo_db["Invoices"].find()
+    collection = mongo_db["Holidays"].find()
 
     treated_collection = treat_collection(collection)
 
     test = util.get_collection_types(treated_collection)
 
-    for item in test:
-        print(item)
-        print(test[item])
-        print()
+    postgres.create_table(postgres_conn, "Holidays", test)
 
 
 

@@ -92,18 +92,27 @@ map_types = {
     bson.int64.Int64: "int8",
     bson.objectid.ObjectId: "bytea",
     int: "integer",
-    None: "string"
+    None: "text"
 }
 
 
 #receives a field and return its type in postgres, like a dictionary (key-value DS)
-def map_types_explicit(field):
+def map_types_by_field(field):
     try:
         if field is None:
             return "text"
+
         return map_types[type(field)]
     except:
         return "Unknown data type " + str(type(field))
+
+
+#gets a type as input and return postgres type. If is not Known, return text as default
+def map_types_by_type(input_type):
+    try:
+        return map_types[input_type]
+    except:
+        return "text"
 
 
 # return a dictionary (key-value DS) of field -> type of field for a given collection of documents
