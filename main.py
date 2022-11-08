@@ -38,9 +38,31 @@ if __name__ == '__main__':
 
     collection = mongo_db["Invoices"].find()
 
-    test_list = treat_collection(collection)
-    print(test_list)
+    treated_collection = treat_collection(collection)
 
+    test = util.get_collection_types(treated_collection)
+
+    for item in test:
+        print(item)
+        print(test[item])
+        print()
+
+
+
+
+    #first = test_list[0]
+    #for item in first:
+    #     print(item)
+    #     print(first[item])
+    #     print(type(first[item]))
+    #     print(util.map_types_explicit(first[item]))
+    #     print()
+    # query_create_table = """CREATE TABLE IF NOT EXISTS tableTest (id SERIAL PRIMARY KEY, model VARCHAR(255) NOT NULL, price INTEGER)"""
+    # query_test = """Insert into tableTest (id, model, price) values (%s,%s,%s)"""
+    # record_to_insert = (5, 'OnePlus', 950)
+    # postgres_cursor.execute(query_create_table)
+    # postgres_cursor.execute(query_test, record_to_insert)
+    # postgres_conn.commit()
     # close clients
     postgres.close_connection(postgres_conn, postgres_cursor)
     mongo.close_connection(mongo_client)

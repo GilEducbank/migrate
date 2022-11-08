@@ -1,6 +1,8 @@
 import psycopg2
 
 
+
+
 def connect(postgres_config):
     try:
         conn = psycopg2.connect(
@@ -21,3 +23,11 @@ def close_connection(connection, cursor):
     print("Connection closed with postgres")
     cursor.close()
     connection.close()
+
+
+def create_table(table_name, fields_types):
+    print("creating table")
+
+
+def insert(table_name, fields_values):
+    print("inserting row")

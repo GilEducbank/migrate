@@ -1,4 +1,6 @@
 import binascii
+import datetime
+
 import bson
 
 
@@ -80,3 +82,44 @@ def treat_document(document):
     inner_result = flatten_doc(document, dict(), "")
     inner_result = treat_arrays(inner_result)
     return inner_result
+
+
+map_types = {
+    bson.binary.Binary: "bytea",
+    str: "text",
+    datetime.datetime: "timestamp(6)",
+    bool: "bool",
+    bson.int64.Int64: "int8",
+    bson.objectid.ObjectId: "bytea",
+    int: "integer",
+    None: "string"
+}
+
+
+#receives a field and return its type in postgres, like a dictionary (key-value DS)
+def map_types_explicit(field):
+    try:
+        if field is None:
+            return "text"
+        return map_types[type(field)]
+    except:
+        return "Unknown data type " + str(type(field))
+
+
+# return a dictionary (key-value DS) of field -> type of field for a given collection of documents
+def get_collection_types(collection):
+    field_type = dict()
+    first_document = collection[0]
+    for field in first_document:
+        if first_document[field] is None:
+            field_type[field] = None
+        else:
+            field_type[field] = type(first_document[field])
+
+    #this for will try to find a diferent type for the field if he is currently set as None
+    for document in collection:
+        for field in field_type:
+            if field_type[field] is None and document[field] is not None:
+                field_type[field] = type(document[field])
+
+    return field_type
