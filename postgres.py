@@ -1,3 +1,4 @@
+import bson
 import psycopg2
 
 import util
@@ -66,7 +67,10 @@ def insert(connection, table_name, document):
 
     values_list = []
     for field in document:
-        values_list.append(document[field])
+        if isinstance(document[field], bson.objectid.ObjectId):
+            values_list.append(str(document[field]))
+        else:
+            values_list.append(document[field])
 
     cursor.execute(final_query, values_list)
     connection.commit()

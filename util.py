@@ -90,14 +90,14 @@ map_types = {
     datetime.datetime: "timestamp(6)",
     bool: "bool",
     bson.int64.Int64: "int8",
-    bson.objectid.ObjectId: "bytea",
+    bson.objectid.ObjectId: "text",
     int: "integer",
     None: "text",
     bytes: "bytea"
 }
 
 
-#receives a field and return its type in postgres, like a dictionary (key-value DS)
+# receives a field and return its type in postgres, like a dictionary (key-value DS)
 def map_types_by_field(field):
     try:
         if field is None:
