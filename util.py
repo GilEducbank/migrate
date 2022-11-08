@@ -92,7 +92,8 @@ map_types = {
     bson.int64.Int64: "int8",
     bson.objectid.ObjectId: "bytea",
     int: "integer",
-    None: "text"
+    None: "text",
+    bytes: "bytea"
 }
 
 
@@ -107,7 +108,7 @@ def map_types_by_field(field):
         return "Unknown data type " + str(type(field))
 
 
-#gets a type as input and return postgres type. If is not Known, return text as default
+# gets a type as input and return postgres type. If is not Known, return text as default
 def map_types_by_type(input_type):
     try:
         return map_types[input_type]
@@ -119,13 +120,19 @@ def map_types_by_type(input_type):
 def get_collection_types(collection):
     field_type = dict()
     first_document = collection[0]
+
+    #always get the biggest document from collection
+    for doc in collection:
+        if len(doc) > len(first_document):
+            first_document = doc
+
     for field in first_document:
         if first_document[field] is None:
             field_type[field] = None
         else:
             field_type[field] = type(first_document[field])
 
-    #this for will try to find a diferent type for the field if he is currently set as None
+    # this for will try to find a different type for the field if he is currently set as None
     for document in collection:
         for field in field_type:
             if field_type[field] is None and document[field] is not None:

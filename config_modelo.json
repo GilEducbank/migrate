@@ -1,11 +1,15 @@
 {
   "tables":[],
-  "URI": "",
+  "mongo": {
+    "URI": "",
+    "database": ""
+  },
+
   "postgres" :{
     "host": "",
     "database": "",
     "user": "",
-    "password": ""
+    "password": "",
+    "port": ""
   }
 }
-

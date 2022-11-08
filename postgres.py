@@ -38,12 +38,41 @@ def create_table(connection, table_name, fields_types):
 
     create_table_query += ','.join(items_to_add)
     create_table_query += ")"
-    print(drop_query)
-    print(create_table_query)
 
     final_query = drop_query + create_table_query
+    # print(final_query)
     cursor.execute(final_query)
     connection.commit()
 
-def insert(table_name, fields_values):
-    print("inserting row")
+
+# insert a single document in the given table
+def insert(connection, table_name, document):
+    print("Inserting row" + table_name)
+    cursor = connection.cursor()
+    insert_q = "INSERT INTO \"" + table_name + "\" "
+    values_q = "VALUES "
+
+    field_builder = []
+    values_builder = []
+    for field in document:
+        field_builder.append("\""+field+"\"")
+        values_builder.append('%s')
+
+    insert_q += "("+', '.join(field_builder) + ")"
+    values_q += "("+','.join(values_builder) + ")"
+
+    final_query = insert_q + values_q
+    print(final_query)
+
+    values_list = []
+    for field in document:
+        values_list.append(document[field])
+
+    cursor.execute(final_query, values_list)
+    connection.commit()
+
+
+# insert many documents in a postgres table, with a given treated collection
+def insert_many(connection, table_name, treated_collection):
+    for document in treated_collection:
+        insert(connection, table_name, document)
