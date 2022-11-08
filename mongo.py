@@ -3,8 +3,7 @@ import pymongo
 
 def get_database(uri):
     client = pymongo.MongoClient(uri)
-    print("Connect Successful")
-    print(client.list_database_names())
+    print("Connect Successful to mongodb")
     mydb = client["educbank"]
     return mydb
 

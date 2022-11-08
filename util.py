@@ -38,7 +38,6 @@ def convert_its_binarys_from_dict(simple_doc):
     for field in simple_doc:
         if isinstance(simple_doc[field], bson.binary.Binary):
             binary_to_string = str(binascii.b2a_base64(simple_doc[field], newline=False))
-            print(binary_to_string)
             map[field] = binary_to_array(binary_to_string)
         elif isinstance(simple_doc[field], dict):
             map[field] = convert_its_binarys_from_dict(simple_doc[field])

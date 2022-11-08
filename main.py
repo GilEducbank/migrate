@@ -1,5 +1,6 @@
 import json
 import mongo
+import postgres
 import util
 
 
@@ -26,14 +27,15 @@ def treat_collection(inner_collection):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    db = mongo.get_database(config["URI"])
+    mongo_db = mongo.get_database(config["URI"])
+    postgres_db = postgres.connect(config["postgres"])
+
     tables = tables_from_json()
 
-    collection = db["Invoices"].find()
+    collection = mongo_db["Invoices"].find()
 
     test_list = treat_collection(collection)
 
-    print(tables)
 
     #mongo.insert_collection(db, test_list)
 
