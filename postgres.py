@@ -11,6 +11,13 @@ def connect(postgres_config):
             port=postgres_config["port"])
 
         print("Connect Successful to postgres")
+
         return conn
     except:
         print("Unable to connect to postgres DB.")
+
+
+def close_connection(connection, cursor):
+    print("Connection closed with postgres")
+    cursor.close()
+    connection.close()

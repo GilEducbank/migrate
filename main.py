@@ -27,15 +27,23 @@ def treat_collection(inner_collection):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    mongo_db = mongo.get_database(config["URI"])
-    postgres_db = postgres.connect(config["postgres"])
-
+    # connect to mongo client and get database
+    mongo_client = mongo.get_client(config["mongo"])
+    mongo_db = mongo_client[config["mongo"]["database"]]
+    # connect to postgres and get the database cursor
+    postgres_conn = postgres.connect(config["postgres"])
+    postgres_cursor = postgres_conn.cursor()
+    # get tables to work with
     tables = tables_from_json()
 
     collection = mongo_db["Invoices"].find()
 
     test_list = treat_collection(collection)
+    print(test_list)
+
+    # close clients
+    postgres.close_connection(postgres_conn, postgres_cursor)
+    mongo.close_connection(mongo_client)
 
 
-    #mongo.insert_collection(db, test_list)
 
