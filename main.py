@@ -15,11 +15,6 @@ def load_config():
 config = load_config()
 
 
-# tables to export from mongodb
-def tables_from_json():
-    return config["tables"]
-
-
 # transform each document in a collection to ber inserted into postgres DB
 def treat_collection(inner_collection):
     treated_list = []
@@ -30,10 +25,12 @@ def treat_collection(inner_collection):
 
 # create tables
 def create_tables_and_insert_into_postgres(mongo_db):
-    tables = tables_from_json()
+    tables = config["tables"]
     for table in tables:
         collection = mongo_db[table].find()
         treated_collection = treat_collection(collection)
+        if len(treated_collection) == 0:
+            continue
         type_names_and_postgres_types = util.get_collection_types(treated_collection)
         postgres.create_table(postgres_conn, table, type_names_and_postgres_types)
         postgres.insert_many(postgres_conn, table, treated_collection)
