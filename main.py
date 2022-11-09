@@ -15,7 +15,7 @@ def load_config():
 config = load_config()
 
 
-# transform each document in a collection to ber inserted into postgres DB
+# transform each document in a collection to be inserted into postgres DB
 def treat_collection(inner_collection):
     treated_list = []
     for inner_item in inner_collection:
@@ -36,7 +36,8 @@ def create_tables_and_insert_into_postgres(mongo_db):
         postgres.insert_many(postgres_conn, table, treated_collection)
 
 
-def mongoimport_via_cli():
+# import tables via CLI (using mongoimport cli command) # ONLY WORKS FOR BATCH PROCESSING - LIST OF DOCUMENTS.
+def mongoimport_via_cli_batch():
     for json_doc in config["mongo"]["new_collections"]:
         subprocess.run(
             ['mongoimport', config["mongo"]["URI"], "--db", config["mongo"]["database"], "--collection", json_doc,
@@ -45,7 +46,7 @@ def mongoimport_via_cli():
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    mongoimport_via_cli()
+    mongoimport_via_cli_batch()
     # connect to mongo client and get database
     mongo_client = mongo.get_client(config["mongo"])
     mongo_db = mongo_client[config["mongo"]["database"]]
