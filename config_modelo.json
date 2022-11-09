@@ -2,7 +2,8 @@
   "tables":[],
   "mongo": {
     "URI": "",
-    "database": ""
+    "database": "",
+    "new_collections": []
   },
 
   "postgres" :{

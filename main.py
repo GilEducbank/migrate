@@ -2,6 +2,7 @@ import json
 import mongo
 import postgres
 import util
+import subprocess
 
 
 # loads json file with configurations
@@ -28,7 +29,7 @@ def treat_collection(inner_collection):
 
 
 # create tables
-def create_tables_and_insert(mongo_db):
+def create_tables_and_insert_into_postgres(mongo_db):
     tables = tables_from_json()
     for table in tables:
         collection = mongo_db[table].find()
@@ -38,11 +39,16 @@ def create_tables_and_insert(mongo_db):
         postgres.insert_many(postgres_conn, table, treated_collection)
 
 
-
+def mongoimport_via_cli():
+    for json_doc in config["mongo"]["new_collections"]:
+        subprocess.run(
+            ['mongoimport', config["mongo"]["URI"], "--db", config["mongo"]["database"], "--collection", json_doc,
+             json_doc + '.json', "--jsonArray"])
 
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
+    mongoimport_via_cli()
     # connect to mongo client and get database
     mongo_client = mongo.get_client(config["mongo"])
     mongo_db = mongo_client[config["mongo"]["database"]]
@@ -51,30 +57,8 @@ if __name__ == '__main__':
     postgres_conn = postgres.connect(config["postgres"])
     postgres_cursor = postgres_conn.cursor()
 
-    # get tables to work with
-    tables = tables_from_json()
-
-    # create tables
-    create_tables_and_insert(mongo_db)
-
-    doc = mongo_db["AbpTenants"].find_one()
-    treated_doc = util.treat_document(doc)
-    postgres.insert(postgres_conn, "AbpTenants", treated_doc)
+    # create tables and insert rows
+    create_tables_and_insert_into_postgres(mongo_db)
 
     postgres.close_connection(postgres_conn, postgres_cursor)
     mongo.close_connection(mongo_client)
-
-    # use this to find field types in documents in each table (which is in the list tables variable)
-    # types = dict()
-    # for table in tables:
-    #     collection = mongo_db[table].find()
-    #     treated_collection = treat_collection(collection)
-    #     for document in treated_collection:
-    #         for field in document:
-    #             if type(document[field]) in types and types[type(document[field])] is not None:
-    #                 continue
-    #             else:
-    #                 types[type(document[field])] = type(document[field])
-    #
-    # for typ in types:
-    #     print(types[typ])

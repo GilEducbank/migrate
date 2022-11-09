@@ -48,7 +48,7 @@ def create_table(connection, table_name, fields_types):
 
 # insert a single document in the given table
 def insert(connection, table_name, document):
-    print("Inserting row" + table_name)
+    print("Inserting row into " + table_name + " table")
     cursor = connection.cursor()
     insert_q = "INSERT INTO \"" + table_name + "\" "
     values_q = "VALUES "
@@ -63,7 +63,7 @@ def insert(connection, table_name, document):
     values_q += "("+','.join(values_builder) + ")"
 
     final_query = insert_q + values_q
-    print(final_query)
+    # print(final_query)
 
     values_list = []
     for field in document:
